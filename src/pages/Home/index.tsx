@@ -1,15 +1,38 @@
-import Hero from '../../components/Hero'
-import CardListHome from '../../containers/CardListHome'
-import { Container } from '../../global/globalStyle'
-import { HomeContainer } from './styles'
+import { FadeLoader } from 'react-spinners'
 
-const Home = () => (
-  <HomeContainer>
-    <Hero textContent="Viva experiências gastronômicas no conforto da sua casa" />
-    <Container>
-      <CardListHome />
-    </Container>
-  </HomeContainer>
-)
+import Header from '../../containers/Header'
+import List from '../../containers/Lista'
+import Footer from '../../containers/Footer'
+
+import { useGetRestaurantsQuery } from '../../service/fakeApi'
+import { colors } from '../../style'
+
+const Home = () => {
+  const { data: restaurantes } = useGetRestaurantsQuery()
+
+  if(restaurantes){
+    return (
+      <div>
+        <Header tipo='home'/>
+        <div className="container">
+          <List items={restaurantes} />
+        </div>
+        <Footer />
+      </div>
+    )
+  }
+  
+  return (
+    <div>
+      <Header tipo='home'/>
+      <div className="container">
+        <div className="center">
+          <FadeLoader color={colors.colorDark} />
+        </div>
+      </div>
+      <Footer />
+    </div>
+  )
+}
 
 export default Home

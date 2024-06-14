@@ -1,95 +1,76 @@
-import Button from '../Button'
-import Tag from '../Tag'
-import {
-  Title,
-  Text,
-  Icon,
-  CardHeader,
-  CardContent,
-  CardImage,
-  CardContainer,
-  ContainerTags,
-  Cover
-} from './styles'
+import { 
+  CardComponent, 
+  CardHead, 
+  CardBody,
+  Destaques, 
+  Button, 
+  BodyTitle, 
+  Title, 
+  Paragraph,
+  Rate,
+  LinkButton
+} from './style'
 
-type CardProps = {
-  card: 'primary' | 'second'
-  kindButton: 'button' | 'link'
-  title: string
-  cover: string
-  description: string
-  nameButton: string
-  iconName?: string
-  rating?: string
-  tagType?: string | undefined
-  tagHighlight?: boolean | undefined
-  to?: string
-  handleClick?: () => void
+import Star from '../../assets/star_rate.png'
+
+import Restaurant from '../../models/Restaurants'
+import Plate from '../../models/Plates'
+
+type CardRProps = {
+  content: Restaurant
 }
 
-const Card = ({
-  card = 'primary',
-  kindButton = 'link',
-  title,
-  cover,
-  description,
-  iconName,
-  rating,
-  nameButton,
-  tagType,
-  tagHighlight,
-  to,
-  handleClick
-}: CardProps) => {
-  function renderTypeButton(kind: string) {
-    return (
-      <Button
-        kind={kindButton}
-        placeholder={nameButton}
-        onClick={kind === 'button' ? handleClick : undefined}
-        to={kind === 'link' ? `${to}` : undefined}
-        displayMode={card === 'primary' ? 'inlineBlock' : 'fullWidth'}
-        themeMode={card}
-      />
-    )
-  }
-
-  function renderTags(type: string, highlight: boolean | undefined) {
-    if (type && highlight === true) {
-      return (
-        <ContainerTags>
-          <Tag placeholder="Destaque da semana" />
-          <Tag placeholder={type} />
-        </ContainerTags>
-      )
-    }
-
-    return (
-      <ContainerTags>
-        <Tag placeholder={type} />
-      </ContainerTags>
-    )
-  }
-
+export const CardRestaurants = ({ content }: CardRProps) => {
   return (
-    <CardContainer>
-      <CardImage card={card}>
-        <Cover src={cover} alt={cover} />
-      </CardImage>
-      <CardContent card={card}>
-        <CardHeader>
-          <Title card={card}>{title}</Title>
-          <CardHeader>
-            {rating && <Title card={card}>{rating}</Title>}
-            {iconName && <Icon src={iconName} alt={iconName} />}
-          </CardHeader>
-        </CardHeader>
-        <Text card={card}>{description}</Text>
-        {renderTypeButton(kindButton)}
-      </CardContent>
-      {tagType && renderTags(tagType, tagHighlight)}
-    </CardContainer>
+      <CardComponent>
+      <CardHead tipo={'true'}>
+        <img src={content.capa} alt="Image Card" />
+      </CardHead>
+      <CardBody tipo={'true'}>
+        <BodyTitle>
+          <Title>{content.titulo}</Title>
+          <Rate>
+            {content.avaliacao}
+            <img src={Star} alt="Star Rate" />
+          </Rate>
+        </BodyTitle>
+        <Paragraph>{content.descricao}</Paragraph>
+        <div>
+          <Button tipo={'true'}>
+            <LinkButton to={`restaurant/${content.id}`}>Saiba Mais</LinkButton>
+          </Button>
+        </div>
+        <Destaques>
+          {content.destacado ? <Button disabled tipo={'true'}>Destaque da semana</Button> : <></>}
+          <Button disabled tipo={'true'}>{content.tipo}</Button>
+        </Destaques>
+      </CardBody>
+    </CardComponent>  
   )
 }
 
-export default Card
+type CardPProps = {
+  content: Plate,
+  state: () => void
+}
+
+export const CardPlates = ({ content, state }: CardPProps) => {
+  return (
+      <CardComponent>
+      <CardHead tipo={'false'}>
+        <img src={content.foto} alt="Image Card" />
+      </CardHead>
+      <CardBody tipo={'false'}>
+        <BodyTitle>
+          <Title>{content.nome}</Title>
+        </BodyTitle>
+        <Paragraph>{content.descricao}</Paragraph>
+        <div>
+          <Button tipo={'false'} onClick={state}>
+            <p>Saiba Mais</p>
+          </Button>
+        </div>
+      </CardBody>
+    </CardComponent>  
+  )
+}

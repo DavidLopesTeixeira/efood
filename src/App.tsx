@@ -1,19 +1,20 @@
-import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import Router from './routes/routes'
-import Cart from './containers/Cart'
-import GlobalStyle from './global/globalStyle'
+import { Provider } from 'react-redux'
+import { Toaster } from 'react-hot-toast'
+
+import Router from './routes'
+
+import GlobalStyle from './style'
+
 import { store } from './store'
-import Footer from './components/Footer'
 
 function App() {
   return (
-    <Provider store={store}>
+    <Provider store={store}> 
+      <Toaster />
       <BrowserRouter>
         <GlobalStyle />
         <Router />
-        <Footer />
-        <Cart />
       </BrowserRouter>
     </Provider>
   )
